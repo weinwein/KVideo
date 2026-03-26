@@ -53,6 +53,20 @@ function syncMergeSources(rawValue: string) {
     }
 }
 
+function syncDanmakuApiUrl(rawValue: string) {
+    if (!rawValue) return;
+
+    const buildTimeValue = process.env.NEXT_PUBLIC_DANMAKU_API_URL || '';
+
+    const settings = settingsStore.getSettings();
+    if (!settings.danmakuApiUrl || settings.danmakuApiUrl === buildTimeValue) {
+        settingsStore.saveSettings({
+            ...settings,
+            danmakuApiUrl: rawValue,
+        });
+    }
+}
+
 export function PasswordGate({ children, hasAuth: initialHasAuth }: { children: React.ReactNode, hasAuth: boolean }) {
     // Enable background subscription syncing globally
     useSubscriptionSync();
@@ -104,6 +118,10 @@ export function PasswordGate({ children, hasAuth: initialHasAuth }: { children: 
                     // Sync merge sources setting from env
                     if (data.mergeSources) {
                         syncMergeSources(data.mergeSources);
+                    }
+
+                    if (data.danmakuApiUrl) {
+                        syncDanmakuApiUrl(data.danmakuApiUrl);
                     }
 
                     // Re-evaluate lock status with confirmed server state

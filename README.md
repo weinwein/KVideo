@@ -145,7 +145,7 @@
 - **播放器联动**：暂停时弹幕冻结，跳转时自动清除，全屏模式下正常显示
 - **多 API 管理**：每个用户可添加多个弹幕 API，选择当前使用的 API
 - **优先级规则**：用户选择的弹幕 API 优先于系统默认配置
-- **环境变量预设**：可通过 `NEXT_PUBLIC_DANMAKU_API_URL` 为所有用户预设弹幕 API 地址
+- **环境变量预设**：可通过 `DANMAKU_API_URL` 或 `NEXT_PUBLIC_DANMAKU_API_URL` 为所有用户预设弹幕 API 地址
 
 ### 广告过滤
 
@@ -456,7 +456,7 @@ docker run -d -p 3000:3000 \
 
 | 变量名 | 说明 | 默认值 |
 |--------|------|--------|
-| `NEXT_PUBLIC_DANMAKU_API_URL` | 弹幕聚合 API 地址 | - |
+| `DANMAKU_API_URL` / `NEXT_PUBLIC_DANMAKU_API_URL` | 弹幕聚合 API 地址 | - |
 
 需要自建或使用兼容 [danmu_api](https://github.com/huangxd-/danmu_api) 格式的弹幕聚合服务。
 
@@ -611,7 +611,7 @@ docker run -e PORT=8080 -p 8080:8080 --name kvideo kuekhaoyang/kvideo:latest
 | `MERGE_SOURCES` / `NEXT_PUBLIC_MERGE_SOURCES` | 启用合并同名源显示（`true`/`1`） | - |
 | `AD_KEYWORDS` / `NEXT_PUBLIC_AD_KEYWORDS` | 广告过滤关键词 | - |
 | `AD_KEYWORDS_FILE` | 广告关键词文件路径 | - |
-| `NEXT_PUBLIC_DANMAKU_API_URL` | 弹幕聚合 API 地址 | - |
+| `DANMAKU_API_URL` / `NEXT_PUBLIC_DANMAKU_API_URL` | 弹幕聚合 API 地址 | - |
 | `UPSTASH_REDIS_REST_URL` | Upstash Redis REST URL（跨设备同步：配置、历史、收藏） | - |
 | `UPSTASH_REDIS_REST_TOKEN` | Upstash Redis REST Token | - |
 
