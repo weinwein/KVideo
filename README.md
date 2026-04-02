@@ -47,6 +47,7 @@
 - **全屏模式选择**：支持系统全屏和网页全屏两种模式
 - **代理播放**：三种代理模式（智能重试、仅直连、总是代理），灵活应对不同网络环境
 - **卡顿检测**：自动检测播放卡顿并提示
+- **一起看 (VideoTogether)**：播放器页面内置官方网页集成脚本，可直接创建或加入房间与朋友同步观看
 - **键盘快捷键**：空格/K 播放暂停、F 全屏、M 静音、P 画中画、J/L/方向键 快进快退、上下键 音量调节
 
 ### 多源并行搜索
@@ -473,6 +474,28 @@ docker run -d -p 3000:3000 \
 
 > 用户还可以在设置页面的「弹幕 API」区域添加多个 API 端点并选择当前使用的，用户选择的 API 优先于系统默认配置。
 
+## 一起看 (VideoTogether) 配置
+
+播放器页面和 IPTV 页面默认内置 [VideoTogether](https://videotogether.github.io/zh-cn/guide/website.html) 官方网页集成脚本，进入播放页后即可直接使用一起看功能。
+
+| 变量名 | 说明 | 默认值 |
+|--------|------|--------|
+| `VIDEOTOGETHER_ENABLED` | 设为 `false` 时禁用一起看集成 | `true` |
+| `VIDEOTOGETHER_SCRIPT_URL` | 自定义 VideoTogether 脚本地址，适合自托管或替换 CDN | `https://fastly.jsdelivr.net/gh/VideoTogether/VideoTogether@latest/release/extension.website.user.js` |
+| `VIDEOTOGETHER_SETTING_URL` | 自定义 VideoTogether 设置页地址，对应官方 `window.videoTogetherWebsiteSettingUrl` 接口 | - |
+
+**示例：**
+
+```bash
+# Docker
+docker run -d -p 3000:3000 \
+  -e VIDEOTOGETHER_SCRIPT_URL="https://your-domain.example.com/extension.website.user.js" \
+  -e VIDEOTOGETHER_SETTING_URL="https://your-domain.example.com/videotogether-settings.html" \
+  --name kvideo kuekhaoyang/kvideo:latest
+```
+
+> 如果部署环境无法稳定访问 jsDelivr，直接自托管 `extension.website.user.js` 并通过 `VIDEOTOGETHER_SCRIPT_URL` 指向自己的地址即可。
+
 ## IPTV 直播源配置
 
 通过环境变量预设 IPTV 直播源，应用启动时会自动添加到直播源列表中。
@@ -612,6 +635,9 @@ docker run -e PORT=8080 -p 8080:8080 --name kvideo kuekhaoyang/kvideo:latest
 | `AD_KEYWORDS` / `NEXT_PUBLIC_AD_KEYWORDS` | 广告过滤关键词 | - |
 | `AD_KEYWORDS_FILE` | 广告关键词文件路径 | - |
 | `DANMAKU_API_URL` / `NEXT_PUBLIC_DANMAKU_API_URL` | 弹幕聚合 API 地址 | - |
+| `VIDEOTOGETHER_ENABLED` | 是否启用 VideoTogether 一起看集成（`false` 时关闭） | `true` |
+| `VIDEOTOGETHER_SCRIPT_URL` | VideoTogether 脚本地址 | `https://fastly.jsdelivr.net/gh/VideoTogether/VideoTogether@latest/release/extension.website.user.js` |
+| `VIDEOTOGETHER_SETTING_URL` | VideoTogether 设置页地址 | - |
 | `UPSTASH_REDIS_REST_URL` | Upstash Redis REST URL（跨设备同步：配置、历史、收藏） | - |
 | `UPSTASH_REDIS_REST_TOKEN` | Upstash Redis REST Token | - |
 
